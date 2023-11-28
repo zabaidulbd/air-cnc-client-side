@@ -8,8 +8,8 @@ import PrivateRoute from './PrivateRoute'
 import DashboardLayout from '../layouts/DashboardLayout'
 import AddRoom from '../pages/Dashboard/AddRoom'
 import { getRoom } from '../api/rooms'
-import MyBookings from '../pages/Dashboard/MyBookings'
 import MyListings from '../pages/Dashboard/MyListings'
+import MyBookings from '../pages/Dashboard/MyBooking'
 
 export const router = createBrowserRouter([
   {
