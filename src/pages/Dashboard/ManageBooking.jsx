@@ -1,13 +1,14 @@
 import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../providers/AuthProvider'
-import { getBookings } from '../../api/bookings'
+import { getHostBookings } from '../../api/bookings'
 import TableRow from '../../components/Dashboard/TableRow'
 import EmptyState from '../../components/Shared/EmptyState'
-const MyBookings = () => {
+
+const ManageBookings = () => {
     const [bookings, setBookings] = useState([])
     const { user } = useContext(AuthContext)
     const fetchBookings = () => {
-        getBookings(user?.email).then(data => {
+        getHostBookings(user?.email).then(data => {
             setBookings(data)
         })
     }
@@ -81,11 +82,11 @@ const MyBookings = () => {
                 <EmptyState
                     message='No booking data available.'
                     address='/'
-                    label='Browse Rooms'
+                    label='Go Back'
                 />
             )}
         </>
     )
 }
 
-export default MyBookings
+export default ManageBookings
