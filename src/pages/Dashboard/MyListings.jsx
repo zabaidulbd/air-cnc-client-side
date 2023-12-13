@@ -3,15 +3,36 @@ import { getRooms } from '../../api/rooms'
 import { AuthContext } from '../../providers/AuthProvider'
 import RoomDataRow from '../../components/Dashboard/RoomDataRow'
 import EmptyState from '../../components/Shared/EmptyState'
+import useAxiosSecure from '../../hooks/useAxiosSecure'
+import { useQuery } from '@tanstack/react-query'
 
 const MyListings = () => {
-    const { user } = useContext(AuthContext)
-    const [rooms, setRooms] = useState([])
-    const fetchRooms = () => getRooms(user?.email).then(data => setRooms(data))
+    const [axiosSecure] = useAxiosSecure()
+    const { user, loading } = useContext(AuthContext)
+    // const [rooms, setRooms] = useState([])
+    // const fetchRooms = () => getRooms(user?.email).then(data => setRooms(data))
+    const { refetch, data: rooms = [] } = useQuery({
+        queryKey: ['rooms', user?.email],
+        enabled: !loading,
+        queryFn: async () => {
+            const res = await axiosSecure(
+                `${import.meta.env.VITE_API_URL}/rooms/${user?.email}`
+            )
+            console.log('res from axios', res.data)
+            return res.data
+        },
+    })
 
-    useEffect(() => {
-        fetchRooms()
-    }, [user])
+    // const test = async () => {
+    //   const res = await axiosSecure(
+    //     `${import.meta.env.VITE_API_URL}/rooms/${user?.email}`
+    //   )
+    //   setRooms(res.data)
+    // }
+    // useEffect(() => {
+    //   // fetchRooms()
+    //   test()
+    // }, [user])
     return (
         <>
             {rooms && Array.isArray(rooms) && rooms.length > 0 ? (
@@ -72,7 +93,8 @@ const MyListings = () => {
                                                 <RoomDataRow
                                                     key={room?._id}
                                                     room={room}
-                                                    fetchRooms={fetchRooms}
+                                                    refetch={refetch}
+                                                // fetchRooms={fetchRooms}
                                                 />
                                             ))}
                                     </tbody>

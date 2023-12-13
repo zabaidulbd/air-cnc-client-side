@@ -4,16 +4,16 @@ import Button from '../Button/Button'
 import { AuthContext } from '../../providers/AuthProvider.jsx'
 import { formatDistance } from 'date-fns'
 import BookingModal from '../Modal/BookingModal'
-import { addBooking, updateStatus } from '../../api/bookings'
-import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
+// import { addBooking, updateStatus } from '../../api/bookings'
+// import toast from 'react-hot-toast'
+// import { useNavigate } from 'react-router-dom'
 const RoomReservation = ({ roomData }) => {
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     const [isOpen, setIsOpen] = useState(false)
     const closeModal = () => {
         setIsOpen(false)
     }
-    const { user, role } = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
 
     // Price Calculation
     const totalPrice =
@@ -45,21 +45,21 @@ const RoomReservation = ({ roomData }) => {
         setValue({ ...value })
     }
 
-    const modalHandler = () => {
-        addBooking(bookingInfo)
-            .then(data => {
-                console.log(data)
-                updateStatus(roomData._id, true)
-                    .then(data => {
-                        console.log(data)
-                        toast.success('Booking Successful!')
-                        navigate('/dashboard/my-bookings')
-                        closeModal()
-                    })
-                    .catch(err => console.log(err))
-            })
-            .catch(err => console.log(err))
-    }
+    // const modalHandler = () => {
+    //   addBooking(bookingInfo)
+    //     .then(data => {
+    //       console.log(data)
+    //       updateStatus(roomData._id, true)
+    //         .then(data => {
+    //           console.log(data)
+    //           toast.success('Booking Successful!')
+    //           navigate('/dashboard/my-bookings')
+    //           closeModal()
+    //         })
+    //         .catch(err => console.log(err))
+    //     })
+    //     .catch(err => console.log(err))
+    // }
 
     return (
         <div className='bg-white rounded-xl border-[1px] border-neutral-200 overflow-hidden'>
@@ -87,7 +87,6 @@ const RoomReservation = ({ roomData }) => {
             </div>
 
             <BookingModal
-                modalHandler={modalHandler}
                 bookingInfo={bookingInfo}
                 isOpen={isOpen}
                 closeModal={closeModal}
